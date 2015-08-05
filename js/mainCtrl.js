@@ -1,14 +1,28 @@
 var app = angular.module('chatroom');
 
-app.controller('mainCtrl', function ($scope, parseService) {
+app.controller('mainCtrl', function ($scope, parseService, $http) {
 	//In your controller you'll have a getParseData function and a postData function, but should be placed on $scope.
 
-	$scope.postData = function(){
-        parseService.postData($scope.message)
-            .success(function(){
-                $scope.message = '';
-            })
-    }
+	$scope.postData = function () {
+		parseService.postData($scope.message)
+			.success(function () {
+				$scope.message = '';
+			})
+	}
+
+	$scope.dropABomb = parseService.dropABomb
+
+	$scope.deleteEntry = function (entryId) {
+		parseService.deleteEntry(entryId)
+			.success(function () {
+				populateScope();
+			})
+	}
+
+	$http.get('https://api.parse.com/1/classes/chat?order=-createdAt')
+		.then(function (data) {
+			console.log(data.data.results.length)
+		})
 
 	//The getParseData function will call the getData method on the parseService object. You'll then save the result of that request to
 	//your controllers $scope as messages ($scope.messages)
@@ -30,7 +44,7 @@ app.controller('mainCtrl', function ($scope, parseService) {
 	//This goes and gets new data every second, which mimicking a chat room experience.
 	populateScope();
 
-	setInterval(function () {
-		populateScope();
-	}, 1500)
+	// setInterval(function () {
+	// 	populateScope();
+	// }, 1500)
 })

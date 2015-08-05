@@ -11,11 +11,12 @@
     <div class="main-container">
         <h1> DevMountain Chat Room </h1>
         <form ng-submit="postData()">
-            <input class="form-control text-box" type="text" ng-model="message" placeholder="Message">
+            <input class="form-control text-box" type="text" ng-model="message" placeholder="Message"><button ng-click="dropABomb()" type="button" name="button">Drop a bomb!</button>
         </form>
         <div class="messages-container">
             <p ng-repeat="message in messages.results"> {{message.text}}
-                <span>Created at: {{message.createdAt}}</span>
+                <span> Created at: {{message.createdAt}}</span>
+                <span ng-click="deleteEntry(message.objectId)"> Delete: {{message.objectId}}</span>
             </p>
         </div>
     </div>
